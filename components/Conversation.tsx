@@ -3,8 +3,7 @@ import { SafeAreaView, Text, TextInput, TouchableOpacity } from "react-native";
 import { styles } from '../App.styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CreativityPreference, LengthPreference } from './Preference.enums';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-
+import { Audio } from 'expo-av';
 
 interface ConversationProps {
     currentPage: string;
@@ -21,8 +20,7 @@ interface Message {
 export default function Conversation({ currentPage, onPageChange, creativityPreference, lengthPreference }: ConversationProps) {
     const [conversation, setConversation] = useState<Message[]>([]);
     const [message, setMessage] = useState('');
-    const [voiceMessage, setVoiceMessage] = useState('');
-    const [audioRecorderPlayer, setAudioRecorderPlayer] = useState<AudioRecorderPlayer | null>(null);
+    const [voiceMessage, setVoiceMessage] = useState<Audio.Recording>();
 
      const handleSendMessage = () => {
         if (message.trim() !== '') {
@@ -32,26 +30,49 @@ export default function Conversation({ currentPage, onPageChange, creativityPref
       };
 
       const handleMicPress = async () => {
-        if (audioRecorderPlayer !== null) {
-            console.log(audioRecorderPlayer)
-        const result = await audioRecorderPlayer!.startRecorder();
-        console.log(result);
-    
-        setTimeout(async () => {
-          const filePath = await audioRecorderPlayer!.stopRecorder();
-          console.log(filePath);
-          setVoiceMessage(filePath);
-        }, 5000);
+        if (voiceMessage) {
+            await stopRecording();
         } else {
-            console.log("audioRecorderPlayer null")
+            await startRecording();
         }
       };
 
-      useEffect(() => {
-        const recorderPlayer = new AudioRecorderPlayer();
-        setAudioRecorderPlayer(recorderPlayer);
-        console.log("audio recored player set")
-      }, []);
+      async function startRecording() {
+        try {
+          console.log('Requesting permissions..');
+          await Audio.requestPermissionsAsync();
+          await Audio.setAudioModeAsync({
+            allowsRecordingIOS: true,
+            playsInSilentModeIOS: true,
+          });
+    
+          console.log('Starting recording..');
+          const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
+          );
+          setVoiceMessage(recording);
+          console.log(recording)
+          console.log('Recording started');
+        } catch (err) {
+          console.error('Failed to start recording', err);
+        }
+      }
+
+      async function stopRecording() {
+        console.log('Stopping recording..');
+        console.log(voiceMessage)
+        await voiceMessage!.stopAndUnloadAsync();
+        await Audio.setAudioModeAsync(
+          {
+            allowsRecordingIOS: false,
+          }
+        );
+        const uri = voiceMessage!.getURI();
+        const sound = await voiceMessage!.createNewLoadedSoundAsync();
+        await sound.sound.playAsync();
+        setVoiceMessage(undefined);
+        console.log('Recording stopped and stored at', uri);
+      }
+
     
 
     return (
