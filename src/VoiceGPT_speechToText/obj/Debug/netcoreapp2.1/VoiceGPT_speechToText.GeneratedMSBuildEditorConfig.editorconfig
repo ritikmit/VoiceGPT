@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = VoiceGPT_speechToText
+build_property.ProjectDir = C:\Users\singhad\Downloads\microsoft-azure-cognitive-services-speech-text-sdk\03\demos\src\VoiceGPT_speechToText\
