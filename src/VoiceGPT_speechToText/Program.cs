@@ -8,7 +8,7 @@ namespace VoiceGPT_speechToText
     {
         public static async Task RecognizeSpeechAsync()
         {
-            var config = SpeechConfig.FromSubscription("50da187e23bd4fdab58c1cb843451f24", "eastus");
+            var config = SpeechConfig.FromSubscription("<Key HERE>", "eastus");
 
             using (var recognizer = new SpeechRecognizer(config))
             {
