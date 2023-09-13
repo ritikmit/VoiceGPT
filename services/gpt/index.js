@@ -1,22 +1,24 @@
 const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
-require('dotenv').config();
-const endpoint = process.env["AZURE_OPENAI_ENDPOINT"] ;
-const azureApiKey = process.env["AZURE_OPENAI_KEY"] ;
+const endpoint = 0;
+const azureApiKey = 0;
 
 const messages = [
   { role: "system", content: "For further converstaion, keep your responses concise and brief" },
   { role: "user", content: "When will bumrah be fit?" },
 ];
 
-async function getGptResponse() {
+async function getGptResponse(conversation) {
   const client = new OpenAIClient(endpoint, new AzureKeyCredential(azureApiKey));
   const deploymentId = "gpt-35-turbo-16k";
-  const result = await client.getChatCompletions(deploymentId, messages);
+  let message = "Could not generate response. Try again!";
+  const result = await client.getChatCompletions(deploymentId, conversation);
 
-  
-  for (const choice of result.choices) {
-    console.log(choice.message);
+  console.log(result.choices);
+  if(result.choices[0]?.message !== undefined){
+    message = result.choices[0]?.message.content;
   }
+
+  return message;
 }
 
-module.exports = { getGptResponse };
+module.exports = {getGptResponse};

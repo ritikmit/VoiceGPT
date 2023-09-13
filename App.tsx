@@ -4,7 +4,8 @@ import { styles } from './App.styles';
 import Login from './components/Login';
 import Conversation from './components/Conversation';
 import Preference from './components/Preference';
-import { CreativityPreference, LengthPreference } from './components/Preference.enums'
+import { CreativityPreference, LengthPreference } from './components/Preference.enums';
+import 'react-native-url-polyfill/auto';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('Login');

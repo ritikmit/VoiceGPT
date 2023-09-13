@@ -4,6 +4,7 @@ import { styles } from '../App.styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CreativityPreference, LengthPreference } from './Preference.enums';
 import { Audio } from 'expo-av';
+import { getGptResponse } from '../services/gpt';
 
 interface ConversationProps {
     currentPage: string;
@@ -13,18 +14,25 @@ interface ConversationProps {
 }
 
 interface Message {
-    text: string;
-    sender: 'user' | 'assistant';
+    content: string;
+    role: 'user' | 'assistant';
 }
 
 export default function Conversation({ currentPage, onPageChange, creativityPreference, lengthPreference }: ConversationProps) {
     const [conversation, setConversation] = useState<Message[]>([]);
     const [message, setMessage] = useState('');
     const [voiceMessage, setVoiceMessage] = useState<Audio.Recording>();
-
-     const handleSendMessage = () => {
-        if (message.trim() !== '') {
-          setConversation([...conversation, { text: message, sender: 'user' },{ text: 'I am not integrated with open AI yet', sender: 'assistant' }]);
+    const handleSendMessage = async () => {
+      if (message.trim() !== '') {
+        
+          let userMessage: Message = { content: message, role: 'user' };
+          let newConversation: Message[] = [...conversation, userMessage];
+          setConversation(newConversation);
+          let gptResponse = await getGptResponse(newConversation);
+          let assistantMessage: Message = { content: gptResponse, role: 'assistant' }
+          newConversation = [...newConversation, assistantMessage];
+          setConversation(newConversation);
+          console.log(gptResponse);
           setMessage('');
         }
       };
@@ -87,9 +95,9 @@ export default function Conversation({ currentPage, onPageChange, creativityPref
           </SafeAreaView>
           <SafeAreaView style={styles.conversation}>
           {conversation.map((message, index) => (
-          <SafeAreaView key={index} style={[styles.messageContainer, message.sender === 'user' ? styles.userMessage : styles.assistantMessage]}>
-            <Text style={styles.messageLabel}>{message.sender}</Text>
-            <Text style={styles.messageText}>{message.text}</Text>
+          <SafeAreaView key={index} style={[styles.messageContainer, message.role === 'user' ? styles.userMessage : styles.assistantMessage]}>
+            <Text style={styles.messageLabel}>{message.role}</Text>
+            <Text style={styles.messageText}>{message.content}</Text>
           </SafeAreaView>
         ))}
           </SafeAreaView>
