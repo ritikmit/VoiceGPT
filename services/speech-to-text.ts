@@ -6,7 +6,6 @@ import base64 from 'base64-js'
 import * as RNFS from 'expo-file-system'
 import * as MediaLibrary from 'expo-media-library';
 import fs from 'fs'
-
 // const convertM4AToWAV = async (m4aUri) => {
 //     try {
 //       // Ensure the output directory exists
@@ -34,8 +33,8 @@ import fs from 'fs'
 //     }
 //   };
   
-export const testingSTT =  async (uri: string = 'file:///storage/emulated/0/Test/test.wav') => {
-    const subscriptionKey = '50da187e23bd4fdab58c1cb843451f24'
+export const testingSTT =  async (uri: string) => {
+    const subscriptionKey = "<insert SUBSCRIPTION KEY AS SHARED IN THE MAIL>"
 const serviceRegion = 'eastus'
 var pushStream = sdk.AudioInputStream.createPushStream();
 console.log("location: ", uri)
