@@ -6,33 +6,7 @@ import base64 from 'base64-js'
 import * as RNFS from 'expo-file-system'
 import * as MediaLibrary from 'expo-media-library';
 import fs from 'fs'
-// const convertM4AToWAV = async (m4aUri) => {
-//     try {
-//       // Ensure the output directory exists
-//       const outputDirectory = `${RNFS.documentDirectory}wav`;
-//       await RNFS.makeDirectoryAsync(outputDirectory, { intermediates: true });
-  
-   
-  
-//       // Generate a unique file name for the WAV file
-//       const wavFileName = `${Date.now()}.wav`;
-//       const wavUri = `${outputDirectory}/${wavFileName}`;
-  
-   
-  
-//       // Perform the conversion using Expo's file system
-//       await MediaLibrary.convertAsync({ uri: m4aUri }, { outputFormat: MediaLibrary.VideoExportPreset.WAV, outputFileType: MediaLibrary.MediaType.audio });
-  
-//       console.log(`Conversion complete. WAV file saved at: ${wavUri}`);
-  
-   
-  
-//       // You can use 'wavUri' to access the converted WAV file
-//     } catch (error) {
-//       console.error('Conversion error:', error);
-//     }
-//   };
-  
+
 export const testingSTT =  async (uri: string) => {
     const subscriptionKey = "<insert SUBSCRIPTION KEY AS SHARED IN THE MAIL>"
 const serviceRegion = 'eastus'
@@ -48,7 +22,7 @@ const fileContent = await RNFS.readAsStringAsync(uri, {
   console.log("Data type of uintarray:", uintarray.constructor.name);
   pushStream.write(uintarray)
   
-var audioConfig = sdk.AudioConfig.fromMicrophoneInput("352659955097867");
+var audioConfig = sdk.AudioConfig.fromAudioInputStream(pushStream);
 console.log("AudioConfigg: ",audioConfig)
 var speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
 
