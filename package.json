@@ -9,15 +9,27 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@azure/openai": "^1.0.0-beta.5",
     "@react-native/metro-config": "^0.72.11",
+    "axios": "^1.5.0",
+    "base-64": "^1.0.0",
+    "base64-js": "^1.5.1",
     "expo": "~49.0.10",
+    "expo-av": "~13.4.1",
+    "expo-file-system": "^15.6.0",
+    "expo-media-library": "^15.6.0",
     "expo-status-bar": "~1.6.0",
+    "microsoft-cognitiveservices-speech-sdk": "^1.32.0",
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-audio-recorder-player": "^3.5.4",
+    "react-native-cli": "^2.0.1",
+    "react-native-ffmpeg": "^0.5.2",
+    "react-native-fs": "^2.20.0",
+    "react-native-get-random-values": "^1.9.0",
     "react-native-permissions": "^3.9.0",
     "react-native-vector-icons": "^10.0.0",
-    "expo-av": "~13.4.1"
+    "string-to-arraybuffer": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

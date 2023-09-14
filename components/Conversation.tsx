@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { CreativityPreference, LengthPreference } from './Preference.enums';
 import { Audio } from 'expo-av';
 import { getGptResponse } from '../services/gpt';
+import { testingSTT } from '../services/speech-to-text';
 
 interface ConversationProps {
     currentPage: string;
@@ -76,7 +77,8 @@ export default function Conversation({ currentPage, onPageChange, creativityPref
         );
         const uri = voiceMessage!.getURI();
         const sound = await voiceMessage!.createNewLoadedSoundAsync();
-        await sound.sound.playAsync();
+        sound.sound.playAsync()
+        testingSTT()
         setVoiceMessage(undefined);
         console.log('Recording stopped and stored at', uri);
       }
