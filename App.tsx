@@ -8,6 +8,7 @@
 import * as React from 'react';
 import type {PropsWithChildren} from 'react';
 import {useEffect, useState} from 'react';
+import 'react-native-url-polyfill/auto';
 
 import {
   Button,
@@ -28,7 +29,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {initializeTts, play} from './services/tts';
+import {play} from './services/tts';
+import Conversation from './components/Conversation';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -84,12 +86,13 @@ function App(): JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
-        <TextInput
+        {/* <TextInput
           placeholder="Enter text to be read here"
           onChangeText={value => {
             setInputText(value);
-          }}></TextInput>
-        <Button title="Press for sound" onPress={playSound}></Button>
+          }}></TextInput> */}
+        {/* <Button title="Press for sound" onPress={playSound}></Button> */}
+        <Conversation />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
@@ -107,7 +110,7 @@ function App(): JSX.Element {
           <Section title="Learn More">
             Read the docs to discover what to do next:
           </Section>
-          <LearnMoreLinks />
+          {/* <LearnMoreLinks /> */}
         </View>
       </ScrollView>
     </SafeAreaView>
