@@ -5,14 +5,18 @@
  * @format
  */
 
-import React from 'react';
+import * as React from 'react';
 import type {PropsWithChildren} from 'react';
+import {useEffect, useState} from 'react';
+
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
@@ -24,6 +28,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {initializeTts, play} from './services/tts';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -31,6 +36,7 @@ type SectionProps = PropsWithChildren<{
 
 function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+
   return (
     <View style={styles.sectionContainer}>
       <Text
@@ -57,9 +63,14 @@ function Section({children, title}: SectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [inputText, setInputText] = useState('');
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+
+  const playSound = () => {
+    play(inputText);
   };
 
   return (
@@ -68,10 +79,17 @@ function App(): JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
+
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
+        <TextInput
+          placeholder="Enter text to be read here"
+          onChangeText={value => {
+            setInputText(value);
+          }}></TextInput>
+        <Button title="Press for sound" onPress={playSound}></Button>
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
