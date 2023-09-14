@@ -2,6 +2,7 @@ import {useState} from 'react';
 import { SafeAreaView, Text, TouchableOpacity } from "react-native";
 import { styles } from '../App.styles';
 import { CreativityPreference, LengthPreference } from './Preference.enums';
+import React from 'react';
 
 interface PreferenceProps {
     currentPage: string;

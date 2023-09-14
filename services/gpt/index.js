@@ -1,6 +1,6 @@
 const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
-const endpoint = 0;
-const azureApiKey = 0;
+const endpoint = 'https://ausopenai.azure-api.net';
+const azureApiKey = 'd02f73a957c948abb66d0baf33e1b214';
 
 const messages = [
   { role: "system", content: "For further converstaion, keep your responses concise and brief" },

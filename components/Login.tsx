@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { SafeAreaView, Text, TextInput, TouchableOpacity } from "react-native";
 import { styles } from '../App.styles';
+import React from 'react';
 
 interface LoginProps {
     currentPage: string;
