@@ -156,3 +156,17 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+
+export const getMicStyle = (isActive: boolean = false) => {
+  let baseStyle = {
+    backgroundColor: '#ccc',
+    borderRadius: 50,
+    padding: 12,
+    color: '#000'
+  };
+  if (isActive) {
+    baseStyle = {...baseStyle, backgroundColor: '#00f', color: '#fff'};
+  }
+
+  return baseStyle;
+};

@@ -1,12 +1,13 @@
 import {useState} from 'react';
 import {SafeAreaView, Text, TextInput, TouchableOpacity} from 'react-native';
-import {styles} from '../App.styles';
+import {getMicStyle, styles} from '../App.styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CreativityPreference, LengthPreference} from './Preference.enums';
 // import {Audio} from 'expo-av';
 import {getGptResponse} from '../services/gpt';
-import React from 'react';
 import {play, stop} from '../services/tts';
+import { onStartRecord, onStopRecord } from '../services/audio';
+import React = require('react');
 
 interface ConversationProps {
   currentPage: string;
@@ -28,6 +29,7 @@ export default function Conversation({
 }: ConversationProps) {
   const [conversation, setConversation] = useState<Message[]>([]);
   const [message, setMessage] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
   // const [voiceMessage, setVoiceMessage] = useState<Audio.Recording>();
 
   const playSound = (inputText: string) => {
@@ -54,6 +56,16 @@ export default function Conversation({
     //   await stopRecording();
     // } else {
     //   await startRecording();
+    // }
+    // if (!isRecording) {
+    //   const res = onStartRecord();
+    //   setIsRecording(true);
+
+    //   /// console.log('res: ' + JSON.stringify(res));
+    // } else {
+    //   onStopRecord();
+    //   setIsRecording(false);
+    //   console.log('Recording stopped');
     // }
   };
 
@@ -109,7 +121,6 @@ export default function Conversation({
       <SafeAreaView style={styles.conversation}>
         {conversation.map((message, index) => (
           <SafeAreaView
-            key={index}
             style={[
               styles.messageContainer,
               message.role === 'user'
@@ -128,8 +139,11 @@ export default function Conversation({
           value={message}
           onChangeText={setMessage}
         />
-        <TouchableOpacity style={styles.micButton} onPress={handleMicPress}>
-          <Icon name="microphone" size={24} color="#fff" />
+        <TouchableOpacity
+          style={getMicStyle(isRecording)}
+          onPress={handleMicPress}>
+          {/* <Icon name="microphone" size={24} color="#fff" /> */}
+          <Text>Mic</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
           <Text style={styles.buttonText}>Send</Text>
