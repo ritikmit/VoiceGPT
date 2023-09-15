@@ -6,7 +6,7 @@ import {CreativityPreference, LengthPreference} from './Preference.enums';
 // import {Audio} from 'expo-av';
 import {getGptResponse} from '../services/gpt';
 import {play, stop} from '../services/tts';
-import { onStartRecord, onStopRecord } from '../services/audio';
+import {onStartRecord, onStopRecord} from '../services/audio';
 import React = require('react');
 
 interface ConversationProps {
@@ -31,6 +31,7 @@ export default function Conversation({
   const [message, setMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   // const [voiceMessage, setVoiceMessage] = useState<Audio.Recording>();
+  const [voicePath, setVocicePath] = useState('');
 
   const playSound = (inputText: string) => {
     play(inputText);
@@ -57,16 +58,16 @@ export default function Conversation({
     // } else {
     //   await startRecording();
     // }
-    // if (!isRecording) {
-    //   const res = onStartRecord();
-    //   setIsRecording(true);
-
-    //   /// console.log('res: ' + JSON.stringify(res));
-    // } else {
-    //   onStopRecord();
-    //   setIsRecording(false);
-    //   console.log('Recording stopped');
-    // }
+    if (!isRecording) {
+      const res = onStartRecord();
+      setIsRecording(true);
+      // setVocicePath(res)
+      console.log('res: ' + JSON.stringify(res));
+    } else {
+      onStopRecord();
+      setIsRecording(false);
+      console.log('Recording stopped');
+    }
   };
 
   // async function startRecording() {
