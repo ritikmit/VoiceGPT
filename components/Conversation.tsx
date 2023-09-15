@@ -6,7 +6,7 @@ import {CreativityPreference, LengthPreference} from './Preference.enums';
 // import {Audio} from 'expo-av';
 import {getGptResponse} from '../services/gpt';
 import {play, stop} from '../services/tts';
-import {onStartRecord, onStopRecord} from '../services/audio';
+import {onStartRecord, onStopRecord} from '../services/audio/audio';
 import React = require('react');
 
 interface ConversationProps {

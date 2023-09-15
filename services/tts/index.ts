@@ -16,7 +16,15 @@ import Tts from 'react-native-tts';
 // };
 
 export const play = (text: string = 'Hello World!') => {
-  Tts.speak(text);
+  Tts.speak(text, {
+    iosVoiceId: 'com.apple.ttsbundle.Moira-compact',
+    rate: 0.5,
+    androidParams: {
+      KEY_PARAM_PAN: -1,
+      KEY_PARAM_VOLUME: 0.5,
+      KEY_PARAM_STREAM: 'STREAM_SYSTEM',
+    },
+  });
 };
 
 export const stop = () => {
