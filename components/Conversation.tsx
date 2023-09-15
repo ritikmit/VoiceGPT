@@ -20,7 +20,12 @@ interface Message {
   role: 'user' | 'assistant';
 }
 
-export default function Conversation() {
+export default function Conversation({
+  currentPage,
+  onPageChange,
+  creativityPreference,
+  lengthPreference,
+}: ConversationProps) {
   const [conversation, setConversation] = useState<Message[]>([]);
   const [message, setMessage] = useState('');
   // const [voiceMessage, setVoiceMessage] = useState<Audio.Recording>();
@@ -44,13 +49,13 @@ export default function Conversation() {
     }
   };
 
-  // const handleMicPress = async () => {
-  //   if (voiceMessage) {
-  //     await stopRecording();
-  //   } else {
-  //     await startRecording();
-  //   }
-  // };
+  const handleMicPress = async () => {
+    // if (voiceMessage) {
+    //   await stopRecording();
+    // } else {
+    //   await startRecording();
+    // }
+  };
 
   // async function startRecording() {
   //   try {
@@ -90,7 +95,7 @@ export default function Conversation() {
   return (
     <SafeAreaView style={styles.container}>
       <SafeAreaView style={styles.header}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.headerButton}
           onPress={() => onPageChange('Preference')}>
           <Text style={styles.buttonText}>Change Preferences</Text>
@@ -99,7 +104,7 @@ export default function Conversation() {
           style={styles.headerButton}
           onPress={() => onPageChange('Login')}>
           <Text style={styles.buttonText}>Log out</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </SafeAreaView>
       <SafeAreaView style={styles.conversation}>
         {conversation.map((message, index) => (
@@ -123,9 +128,9 @@ export default function Conversation() {
           value={message}
           onChangeText={setMessage}
         />
-        {/* <TouchableOpacity style={styles.micButton} onPress={handleMicPress}>
+        <TouchableOpacity style={styles.micButton} onPress={handleMicPress}>
           <Icon name="microphone" size={24} color="#fff" />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
           <Text style={styles.buttonText}>Send</Text>
         </TouchableOpacity>

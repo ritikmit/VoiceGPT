@@ -7,9 +7,9 @@
 
 import * as React from 'react';
 import type {PropsWithChildren} from 'react';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import 'react-native-url-polyfill/auto';
-
+import {styles} from './App.styles';
 import {
   Button,
   SafeAreaView,
@@ -31,6 +31,12 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {play} from './services/tts';
 import Conversation from './components/Conversation';
+import {
+  CreativityPreference,
+  LengthPreference,
+} from './components/Preference.enums';
+import Login from './components/Login';
+import Preference from './components/Preferences';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -66,7 +72,26 @@ function Section({children, title}: SectionProps): JSX.Element {
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [inputText, setInputText] = useState('');
+  const [currentPage, setCurrentPage] = useState('Login');
+  const [creativityPreference, setCreativityPreference] = useState(
+    CreativityPreference.BALANCE,
+  );
+  const [lengthPreference, setLengthPreference] = useState(
+    LengthPreference.CASUAL,
+  );
 
+  const handleCreativityPreferenceChange = (
+    preference: CreativityPreference,
+  ) => {
+    setCreativityPreference(preference);
+  };
+
+  const handleLengthPreferenceChange = (preference: LengthPreference) => {
+    setLengthPreference(preference);
+  };
+  const handlePageChange = (page: string) => {
+    setCurrentPage(page);
+  };
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -85,15 +110,42 @@ function App(): JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
+        <SafeAreaView>
+          <Text>Chatter bot</Text>
+        </SafeAreaView>
+        {/* <Header /> */}
         {/* <TextInput
           placeholder="Enter text to be read here"
           onChangeText={value => {
             setInputText(value);
           }}></TextInput> */}
         {/* <Button title="Press for sound" onPress={playSound}></Button> */}
-        <Conversation />
-        <View
+        <SafeAreaView style={styles.container}>
+          {currentPage === 'Login' && (
+            <Login currentPage={currentPage} onPageChange={handlePageChange} />
+          )}
+          {currentPage === 'Conversation' && (
+            <Conversation
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+              creativityPreference={creativityPreference}
+              lengthPreference={lengthPreference}
+            />
+          )}
+          {currentPage === 'Preference' && (
+            <Preference
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+              creativityPreference={creativityPreference}
+              handleCreativityPreferenceChange={
+                handleCreativityPreferenceChange
+              }
+              lengthPreference={lengthPreference}
+              handleLengthPreferenceChange={handleLengthPreferenceChange}
+            />
+          )}
+        </SafeAreaView>
+        {/* <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
@@ -110,30 +162,11 @@ function App(): JSX.Element {
           <Section title="Learn More">
             Read the docs to discover what to do next:
           </Section>
-          {/* <LearnMoreLinks /> */}
-        </View>
+          <LearnMoreLinks />
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
